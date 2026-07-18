@@ -87,7 +87,9 @@ async fn delete_session_internal(user_id: &str, session_id: u32, skip_region: bo
 /// Check whether a given user ID is online
 pub async fn is_online(user_id: &str) -> bool {
     if let Ok(mut conn) = get_connection().await {
-        conn.exists(user_id).await.unwrap_or(false)
+        conn.exists(format!("sessions:{user_id}"))
+            .await
+            .unwrap_or(false)
     } else {
         false
     }
